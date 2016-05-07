@@ -3,11 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Anamakine: 127.0.0.1
-<<<<<<< HEAD
--- Üretim Zamanı: 07 May 2016, 15:22:56
-=======
--- Üretim Zamanı: 06 May 2016, 18:49:54
->>>>>>> origin/master
+-- Üretim Zamanı: 07 May 2016, 22:11:02
 -- Sunucu sürümü: 5.7.11
 -- PHP Sürümü: 5.6.19
 
@@ -130,19 +126,11 @@ CREATE TABLE `employee_pool` (
 --
 
 INSERT INTO `employee_pool` (`id`, `fname`, `lname`, `bdate`, `sex`, `tc`, `medeni_hal`, `point`, `maas`) VALUES
-<<<<<<< HEAD
-(23, 'Burak', 'Öztürk', '1996-07-02', 'Bay', '12345678900', 'Bekar', 2000, 0),
-(24, 'Ferhat Fikri', 'Minder', '1995-03-04', 'Bay', '12345678900', 'Evli', 2500, 0),
-(25, 'Selim Sirac', 'Güler', '1995-05-05', 'Bay', '12345678900', 'Evli', 2500, 0),
-(26, 'Cemal', 'Taşkıran', '1996-02-01', 'Bay', '12345678900', 'Bekar', 2500, 0),
-(30, 'Burak', 'İdi', '1995-05-05', 'Bay', '12345678900', 'Bekar', 2500, 0);
-=======
-(23, 'Burak', 'Öztürk', '1996-07-02', 'Bay', '12345678900', 'Bekar', 2000, 2350),
-(22, 'Burak', 'İdi', '1995-05-05', 'Bay', '12345678900', 'Bekar', 2500, 2750),
-(24, 'Ferhat Fikri', 'Minder', '1995-03-04', 'Bay', '12345678900', 'Evli', 2500, 2500),
-(25, 'Selim Sirac', 'Güler', '1995-05-05', 'Bay', '12345678900', 'Evli', 2500, 9000),
-(26, 'Cemal', 'Taşkıran', '1996-02-01', 'Bay', '12345678900', 'Bekar', 2500, 3500);
->>>>>>> origin/master
+(32, 'Ferhat Fikri', 'Minder', '1995-03-04', 'Bay', '12345678900', 'Evli', 2500, 0),
+(33, 'Selim Sirac', 'Güler', '1995-05-05', 'Bay', '12345678900', 'Evli', 2500, 0),
+(34, 'Cemal', 'Taşkıran', '1996-02-01', 'Bay', '12345678900', 'Bekar', 2500, 0),
+(35, 'Burak', 'İdi', '1995-05-05', 'Bay', '12345678900', 'Bekar', 2500, 0),
+(36, 'Burak', 'Öztürk', '1996-07-02', 'Bay', '12345678900', 'Bekar', 2000, 0);
 
 -- --------------------------------------------------------
 
@@ -162,25 +150,16 @@ CREATE TABLE `employee_pool_com` (
 --
 
 INSERT INTO `employee_pool_com` (`id`, `e_id`, `com_id`, `value`) VALUES
-(43, 23, 1, '5359812332'),
-<<<<<<< HEAD
-=======
-(42, 22, 2, 'idiburak60@gmail.com'),
-(41, 22, 1, '5434360499'),
->>>>>>> origin/master
-(44, 23, 2, 'bozturk96@gmail.com'),
-(45, 24, 1, '5428145777'),
-(46, 24, 2, 'ferhatmndr@gmail.com'),
-(47, 25, 1, '5414161995'),
-(48, 25, 2, 'selimsirac@gmail.com'),
-(49, 26, 1, '5327414185'),
-<<<<<<< HEAD
-(50, 26, 2, 'cemaltaskiran@gmail.com'),
-(57, 30, 2, 'idiburak60@gmail.com'),
-(58, 30, 1, '5434360499');
-=======
-(50, 26, 2, 'cemaltaskiran@gmail.com');
->>>>>>> origin/master
+(61, 32, 2, 'ferhatmndr@gmail.com'),
+(67, 35, 2, 'idiburak60@gmail.com'),
+(66, 34, 2, 'cemaltaskiran@gmail.com'),
+(65, 34, 1, '5327414185'),
+(64, 33, 2, 'selimsirac@gmail.com'),
+(63, 33, 1, '5414161995'),
+(62, 32, 1, '5428145777'),
+(68, 35, 1, '5434360499'),
+(69, 36, 2, 'bozturk96@gmail.com'),
+(70, 36, 1, '5359812332');
 
 -- --------------------------------------------------------
 
@@ -199,24 +178,19 @@ CREATE TABLE `employee_pool_dil` (
 --
 
 INSERT INTO `employee_pool_dil` (`id`, `e_id`, `dil_id`) VALUES
-(60, 24, 1),
-(59, 23, 4),
-<<<<<<< HEAD
-(71, 30, 1),
-(70, 30, 3),
-=======
-(56, 22, 3),
-(55, 22, 1),
->>>>>>> origin/master
-(58, 23, 3),
-(57, 23, 1),
-(61, 24, 2),
-(62, 24, 3),
-(63, 25, 1),
-(64, 25, 2),
-(65, 25, 3),
-(66, 25, 4),
-(67, 26, 1);
+(87, 36, 4),
+(77, 32, 1),
+(79, 33, 2),
+(78, 33, 1),
+(76, 32, 2),
+(75, 32, 3),
+(86, 36, 3),
+(85, 36, 1),
+(84, 35, 3),
+(83, 35, 1),
+(82, 34, 1),
+(81, 33, 4),
+(80, 33, 3);
 
 -- --------------------------------------------------------
 
@@ -235,22 +209,17 @@ CREATE TABLE `employee_pool_yetenek` (
 --
 
 INSERT INTO `employee_pool_yetenek` (`id`, `e_id`, `y_id`) VALUES
-(61, 25, 1),
-(60, 24, 3),
-(59, 24, 2),
-(58, 23, 3),
-(57, 23, 1),
-<<<<<<< HEAD
-(69, 30, 1),
-(68, 30, 4),
-=======
-(56, 22, 4),
-(55, 22, 1),
->>>>>>> origin/master
-(62, 25, 2),
-(63, 25, 3),
-(64, 25, 4),
-(65, 26, 1);
+(80, 35, 4),
+(82, 36, 3),
+(81, 36, 1),
+(73, 32, 3),
+(72, 32, 2),
+(75, 33, 2),
+(74, 33, 1),
+(79, 35, 1),
+(78, 34, 1),
+(77, 33, 4),
+(76, 33, 3);
 
 -- --------------------------------------------------------
 
@@ -295,7 +264,6 @@ CREATE TABLE `proje_bitmis` (
 -- --------------------------------------------------------
 
 --
-<<<<<<< HEAD
 -- Tablo için tablo yapısı `proje_bitmis_to_employee`
 --
 
@@ -310,8 +278,6 @@ CREATE TABLE `proje_bitmis_to_employee` (
 -- --------------------------------------------------------
 
 --
-=======
->>>>>>> origin/master
 -- Tablo için tablo yapısı `proje_pool`
 --
 
@@ -456,15 +422,12 @@ ALTER TABLE `proje_bitmis`
   ADD PRIMARY KEY (`id`);
 
 --
-<<<<<<< HEAD
 -- Tablo için indeksler `proje_bitmis_to_employee`
 --
 ALTER TABLE `proje_bitmis_to_employee`
   ADD PRIMARY KEY (`id`);
 
 --
-=======
->>>>>>> origin/master
 -- Tablo için indeksler `proje_pool`
 --
 ALTER TABLE `proje_pool`
@@ -500,74 +463,42 @@ ALTER TABLE `dil`
 -- Tablo için AUTO_INCREMENT değeri `employee`
 --
 ALTER TABLE `employee`
-<<<<<<< HEAD
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
->>>>>>> origin/master
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- Tablo için AUTO_INCREMENT değeri `employee_com`
 --
 ALTER TABLE `employee_com`
-<<<<<<< HEAD
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
->>>>>>> origin/master
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 --
 -- Tablo için AUTO_INCREMENT değeri `employee_dil`
 --
 ALTER TABLE `employee_dil`
-<<<<<<< HEAD
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
->>>>>>> origin/master
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 --
 -- Tablo için AUTO_INCREMENT değeri `employee_pool`
 --
 ALTER TABLE `employee_pool`
-<<<<<<< HEAD
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
->>>>>>> origin/master
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- Tablo için AUTO_INCREMENT değeri `employee_pool_com`
 --
 ALTER TABLE `employee_pool_com`
-<<<<<<< HEAD
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
->>>>>>> origin/master
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 --
 -- Tablo için AUTO_INCREMENT değeri `employee_pool_dil`
 --
 ALTER TABLE `employee_pool_dil`
-<<<<<<< HEAD
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
->>>>>>> origin/master
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 --
 -- Tablo için AUTO_INCREMENT değeri `employee_pool_yetenek`
 --
 ALTER TABLE `employee_pool_yetenek`
-<<<<<<< HEAD
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
->>>>>>> origin/master
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 --
 -- Tablo için AUTO_INCREMENT değeri `employee_yetenek`
 --
 ALTER TABLE `employee_yetenek`
-<<<<<<< HEAD
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
-=======
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
->>>>>>> origin/master
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 --
 -- Tablo için AUTO_INCREMENT değeri `proje`
 --
@@ -579,14 +510,11 @@ ALTER TABLE `proje`
 ALTER TABLE `proje_bitmis`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
-<<<<<<< HEAD
 -- Tablo için AUTO_INCREMENT değeri `proje_bitmis_to_employee`
 --
 ALTER TABLE `proje_bitmis_to_employee`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
-=======
->>>>>>> origin/master
 -- Tablo için AUTO_INCREMENT değeri `proje_pool`
 --
 ALTER TABLE `proje_pool`
