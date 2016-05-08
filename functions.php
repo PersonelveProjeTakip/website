@@ -1,16 +1,36 @@
 <?php
+/*
+    * Bu dosya, sistem üzerinde gerçekleşen tüm işlemlerin bulunduğu dosyadır.
+    * cemaltaskiran@gmail.com
+*/
 session_start();
 $user = "Admin";
 $title = "Personel ve Proje Takip Sistemi";
+/*
+    Bu fonsiyon, javascript kodu kullanarak yönlendirme yapar.
+    @parametre milisaniye girilen milisaniye
+    @parametre nereye yönlenilecek adres
+*/
 function yonlendir($milisaniye,$nereye){
     echo'<script>setTimeout(function (){window.location.href = "'.$nereye.'";},'.$milisaniye.');</script>';
 } 
+/*
+    Bu fonsiyon, hata mesajı yazdırır.
+    @parametre msg mesaj
+*/
 function failMessage($msg){
 	echo '<div class="fail">'.$msg.'</div>';
 }
+/*
+    Bu fonsiyon, başarılı işlem ardından mesaj yazdırır.
+    @parametre msg mesaj
+*/
 function successMessage($msg){
 	echo '<div class="success">'.$msg.'</div>';
 }
+/*
+    Bu fonsiyon, yönetici girişi yapılmasını sağlar.
+*/
 function girisYap(){	
 	$user = "Admin";
 	$pass = "25d55ad283aa400af464c76d713c07ad";	
@@ -35,25 +55,37 @@ function girisYap(){
         yonlendir(0,"index.php");
 	}	
 }
+/*
+    Bu fonsiyon, yönetici girişi yapılıp yapılmadığını kontrol eder.
+*/
 function girisKontrol(){	
 	if(empty($_SESSION['user'])){	
         header("Location:login.php");		
 	}	
 }
+/*
+    Bu fonsiyon, yöneticinin çıkış yapmasını sağlar.
+*/
 function cikisYap(){	
 	unset($_SESSION['user']);	
 }
+/*
+    Bu fonsiyon, veri tabanına bağlatı yapar ve veri tabanı bilgilerini döndürür.
+    @return db veri tabanı bilgileri
+*/
 function veriTabaninaBaglan(){	
 	$server="localhost";	
 	$user="root";
 	$pass="";
 	$dbName="savt";
+    
     /*
     $server="mysql.hostinger.web.tr";
     $user="u609214744_root";
     $pass="00root";
     $dbName="u609214744_savt";
-	*/
+    */
+	
 	try{		
 		$db = new PDO("mysql:host=$server;dbname=$dbName;charset=utf8",$user, $pass);
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -62,10 +94,19 @@ function veriTabaninaBaglan(){
 	}
 	return $db;
 }
+/*
+    Bu fonsiyon, veri tabanı bağlantısını sonlandırır.
+    @parametre db veri tabanı bilgileri
+*/
 function veriTabaniniKapat($db){
 	$db = null;
     session_write_close ();
 }
+/*
+    Bu fonsiyon, gerekli kontroller yapıldıktan sonra veri tabanına calışan bilgilerini yazar. 
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function calisanEkle($db,$table){
     $phpself = $_SERVER["PHP_SELF"];
     if(isset($_POST["add"])){
@@ -223,6 +264,11 @@ function calisanEkle($db,$table){
         </form>
     ';
 }
+/*
+    Bu fonsiyon, gerekli kontroller yapıldıktan sonra calışan bilgilerini düzenler. 
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function calisanDuzenle($db,$table){
     $id = $_GET["edit"];
     $phpself = $_SERVER['PHP_SELF'];
@@ -448,6 +494,11 @@ function calisanDuzenle($db,$table){
         yonlendir(1000,$phpself);
     }
 }
+/*
+    Bu fonsiyon, istenilen çalışanı siler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function calisanSil($db,$table){
     $phpself = $_SERVER['PHP_SELF'];
     $id = $_GET["delete"];
@@ -488,6 +539,11 @@ function calisanSil($db,$table){
         
     yonlendir(1000,$phpself);
 }
+/*
+    Bu fonsiyon, istenilen çalışanı aktif/pasif gruplar arasında taşır.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function calisanTasi($db,$table1,$table2){
     $id = $_GET["move"];
     $phpself = $_SERVER['PHP_SELF'];
@@ -593,6 +649,11 @@ function calisanTasi($db,$table1,$table2){
     }
     yonlendir(1000,$phpself);
 }
+/*
+    Bu fonsiyon, aktif çalışanları listeler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function aktifCalisanlariYazdir($db,$table){
     $sql = "SELECT * FROM {$table} ORDER BY id";
     $result = $db->query($sql, PDO::FETCH_ASSOC);
@@ -660,6 +721,11 @@ function aktifCalisanlariYazdir($db,$table){
 		failMessage("Hiç bir sonuç bulunamadı");
 	}
 }
+/*
+    Bu fonsiyon, çalışan havuzundaki çalışanları listeler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function pasifCalisanlariYazdir($db,$table){
      $sql = "SELECT * FROM {$table} ORDER BY id";
     $result = $db->query($sql, PDO::FETCH_ASSOC);
@@ -711,6 +777,11 @@ function pasifCalisanlariYazdir($db,$table){
 		failMessage("Hiç bir sonuç bulunamadı");
 	}
 }
+/*
+    Bu fonsiyon, istenilen çalışanın tüm bilgilerini yazdırır.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function ayrintiliCalisan($db,$table){
 	$id = $_GET["detail"];
     $phpself = $_SERVER['PHP_SELF'];
@@ -809,6 +880,11 @@ function ayrintiliCalisan($db,$table){
         yonlendir(1000,$phpself);
     }
 }
+/*
+    Bu fonsiyon, gerekli kontroller sonrasında veri tabanına proje bilgileri yazdırır.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function projeEkle($db,$table){ 
     $phpself = $_SERVER["PHP_SELF"];
     if(isset($_POST["add"])){
@@ -866,6 +942,11 @@ function projeEkle($db,$table){
     </form>
     ';
 }
+/*
+    Bu fonsiyon, gerekli kontroller sonrasında projeyi düzenler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function projeDuzenle($db,$table){
     $id = $_GET["edit"];
     $phpself = $_SERVER['PHP_SELF'];
@@ -981,6 +1062,11 @@ function projeDuzenle($db,$table){
         yonlendir(1000,$phpself);
     }
 }
+/*
+    Bu fonsiyon, istenilen projeyi siler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function projeSil($db,$table){
     $phpself = $_SERVER['PHP_SELF'];
     $id = $_GET["delete"];
@@ -1012,6 +1098,11 @@ function projeSil($db,$table){
         
     yonlendir(1000,$phpself);
 }
+/*
+    Bu fonsiyon, aktif/bekleyen projeler arasında taşıma işlemi yapar.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function projeTasi($db,$table1,$table2){
     $id = $_GET["move"];
     $phpself = $_SERVER['PHP_SELF'];
@@ -1044,6 +1135,11 @@ function projeTasi($db,$table1,$table2){
     }
     yonlendir(1000,$phpself);
 }
+/*
+    Bu fonsiyon, projeyi bitirir ve biten projelere taşır.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function projeBitir($db,$table1,$table2){
     $id = $_GET["finish"];
     $phpself = $_SERVER['PHP_SELF'];
@@ -1151,6 +1247,11 @@ function projeBitir($db,$table1,$table2){
         yonlendir(1000,$phpself);
     }
 }
+/*
+    Bu fonsiyon, aktif projeleri listeler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function aktifProjeleriYazdir($db,$table){
     $sql = "SELECT * FROM {$table}";
 	$result = $db->query($sql, PDO::FETCH_ASSOC);
@@ -1187,6 +1288,11 @@ function aktifProjeleriYazdir($db,$table){
 		failMessage("Hiç bir sonuç bulunamadı");
 	}
 }
+/*
+    Bu fonsiyon, bekleyen projeleri listeler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function pasifProjeleriYazdir($db,$table){
     $sql = "SELECT * FROM {$table}";
 	$result = $db->query($sql, PDO::FETCH_ASSOC);
@@ -1222,6 +1328,11 @@ function pasifProjeleriYazdir($db,$table){
 		failMessage("Hiç bir sonuç bulunamadı");
 	}
 }
+/*
+    Bu fonsiyon, biten projeleri listeler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function bitmisProjeleriYazdir($db,$table){
     $sql = "SELECT * FROM {$table}";
 	$result = $db->query($sql, PDO::FETCH_ASSOC);
@@ -1265,6 +1376,11 @@ function bitmisProjeleriYazdir($db,$table){
 		failMessage("Hiç bir sonuç bulunamadı");
 	}
 }
+/*
+    Bu fonsiyon, istenilen projenin bütün bilgilerini yazdırır.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function ayrintiliProje($db,$table){
 	$id = $_GET["detail"];
     $phpself = $_SERVER['PHP_SELF'];
@@ -1318,6 +1434,11 @@ function ayrintiliProje($db,$table){
         yonlendir(1000,$phpself);
     }
 }
+/*
+    Bu fonsiyon, veri tabanına yabancı dil ekler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function dilEkle($db,$table){ 
     $phpself = $_SERVER["PHP_SELF"];
     if(isset($_POST["add"])){
@@ -1351,6 +1472,11 @@ function dilEkle($db,$table){
     </form>
     ';
 }
+/*
+    Bu fonsiyon, istenilen yabancı dili düzenler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function dilDuzenle($db,$table){
     $id = $_GET["edit"];
     $phpself = $_SERVER['PHP_SELF'];
@@ -1395,6 +1521,11 @@ function dilDuzenle($db,$table){
         yonlendir(1000,$phpself);
     }
 }
+/*
+    Bu fonsiyon, istenilen dili siler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function dilSil($db,$table){
     $phpself = $_SERVER['PHP_SELF'];
     $id = $_GET["delete"];
@@ -1413,6 +1544,11 @@ function dilSil($db,$table){
         
     yonlendir(1000,$phpself);
 }
+/*
+    Bu fonsiyon, tüm yabancı dilleri listeler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function dilleriYazdir($db,$table){
     $phpself = $_SERVER['PHP_SELF'];
     $sql = "SELECT * FROM {$table} ORDER BY id";
@@ -1441,6 +1577,11 @@ function dilleriYazdir($db,$table){
         failMessage("Hiç bir sonuç bulunamadı");
     }
 }
+/*
+    Bu fonsiyon, veri tabanına yetenek ekler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function yetenekEkle($db,$table){ 
     $phpself = $_SERVER["PHP_SELF"];
     if(isset($_POST["add"])){
@@ -1474,6 +1615,11 @@ function yetenekEkle($db,$table){
     </form>
     ';
 }
+/*
+    Bu fonsiyon, istenilen yeteneği düzenler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function yetenekDuzenle($db,$table){
     $id = $_GET["edit"];
     $phpself = $_SERVER['PHP_SELF'];
@@ -1518,6 +1664,11 @@ function yetenekDuzenle($db,$table){
         yonlendir(1000,$phpself);
     }
 }
+/*
+    Bu fonsiyon, istenilen yeteneği siler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function yetenekSil($db,$table){
     $phpself = $_SERVER['PHP_SELF'];
     $id = $_GET["delete"];
@@ -1536,6 +1687,11 @@ function yetenekSil($db,$table){
         
     yonlendir(1000,$phpself);
 }
+/*
+    Bu fonsiyon, tüm yetenekleri listeler.
+    @parametre db veri tabanı bağlantı bilgileri
+    @parametre table ilgili işlemin yapılacağı veri tabanı tablosu
+*/
 function yetenekleriYazdir($db,$table){
     $phpself = $_SERVER['PHP_SELF'];
     $sql = "SELECT * FROM {$table} ORDER BY id";
