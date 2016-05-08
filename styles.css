@@ -347,3 +347,26 @@ select{
 .tt-suggestion p {
 	margin: 0;
 }
+footer{
+    background: #fff;
+    border-radius: 5px;
+    float:right;
+    margin-bottom:20px;
+    width: 745px;
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
+	height: 60px;
+}
+footer p{
+	line-height: 60px;
+}
+footer img{
+	float: left;
+	margin:10px;
+}
+.left{
+	float: left;
+}
+.right{
+	float: right;
+	margin-right: 10px;
+}
