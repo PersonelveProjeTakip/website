@@ -17,6 +17,13 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Project ignores
+deneme.php
+bootstrap.min.css
+bootstrap.min.js
+jquery.min.js
+typeahead.min.js
+
 # =========================
 # Operating System Files
 # =========================
