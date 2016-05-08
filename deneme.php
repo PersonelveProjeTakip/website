@@ -1,45 +1,54 @@
-<?php
+<?php 
+$indicesServer = array('PHP_SELF', 
+'argv', 
+'argc', 
+'GATEWAY_INTERFACE', 
+'SERVER_ADDR', 
+'SERVER_NAME', 
+'SERVER_SOFTWARE', 
+'SERVER_PROTOCOL', 
+'REQUEST_METHOD', 
+'REQUEST_TIME', 
+'REQUEST_TIME_FLOAT', 
+'QUERY_STRING', 
+'DOCUMENT_ROOT', 
+'HTTP_ACCEPT', 
+'HTTP_ACCEPT_CHARSET', 
+'HTTP_ACCEPT_ENCODING', 
+'HTTP_ACCEPT_LANGUAGE', 
+'HTTP_CONNECTION', 
+'HTTP_HOST', 
+'HTTP_REFERER', 
+'HTTP_USER_AGENT', 
+'HTTPS', 
+'REMOTE_ADDR', 
+'REMOTE_HOST', 
+'REMOTE_PORT', 
+'REMOTE_USER', 
+'REDIRECT_REMOTE_USER', 
+'SCRIPT_FILENAME', 
+'SERVER_ADMIN', 
+'SERVER_PORT', 
+'SERVER_SIGNATURE', 
+'PATH_TRANSLATED', 
+'SCRIPT_NAME', 
+'REQUEST_URI', 
+'PHP_AUTH_DIGEST', 
+'PHP_AUTH_USER', 
+'PHP_AUTH_PW', 
+'AUTH_TYPE', 
+'PATH_INFO', 
+'ORIG_PATH_INFO') ; 
 
-$txt = "";
-session_start();
-
-if (isset($_POST['submit']) && (($_POST['text']) != "")) {
-    $_SESSION['text'] = $_POST['text'];
-    header("Location: ". $_SERVER['REQUEST_URI']);
-    exit;
-} else {
-    if(isset($_SESSION['text'])) {
-        //Retrieve show string from form submission.
-        $txt = $_SESSION['text'];
-        unset($_SESSION['text']);
-    }
-}
+echo '<table cellpadding="10">' ; 
+foreach ($indicesServer as $arg) { 
+    if (isset($_SERVER[$arg])) { 
+        echo '<tr><td>'.$arg.'</td><td>' . $_SERVER[$arg] . '</td></tr>' ; 
+    } 
+    else { 
+        echo '<tr><td>'.$arg.'</td><td>-</td></tr>' ; 
+    } 
+} 
+echo '</table>' ; 
 
 ?>
-
-<!DOCTYPE html >
-<head>
-<title>Refresher test</title>
-</head>
-<body>
-<br/><br/><h2>What Me Refresh</h2>
-
-<?php
-if($txt != "") {
-    echo "The text you entered was : $txt";
-} else {
-?>
-
-
-<p><h3>Enter text in the box then select "Go":</h3></p>
-
-<form method="post">
-<textarea rows="5" cols="50" name="text" >
-</textarea>
-<input type="submit" name="submit" value="Go" />
-</form>
-
-<?php } ?>
-
-</body>
-</html>

@@ -64,10 +64,11 @@ function veriTabaninaBaglan(){
 }
 function veriTabaniniKapat($db){
 	$db = null;
+    session_write_close ();
 }
 function calisanEkle($db,$table){
     $phpself = $_SERVER["PHP_SELF"];
-    if(isset($_POST["add"]) && isset($_POST["marital"]) && isset($_POST["sex"])){
+    if(isset($_POST["add"])){
         $name = $_POST["name"];
         $surname = $_POST["surname"];
         $birth = $_POST["birth"];
@@ -77,76 +78,74 @@ function calisanEkle($db,$table){
         $point = $_POST["point"];
 		$mobile = $_POST["mobile"];
         $email = $_POST["email"];
-		if(strlen((string)$tcno) != 11){
-			failMessage("TC no 11 haneli olmalıdır!");
-		}
-		else if(strlen((string)$mobile) != 10){
-			failMessage("Telefon numarası 10 haneli olmalıdır");
-		}
-		else{
-			$sql = "INSERT INTO {$table} SET 
-			fname = ?,
-			lname = ?,
-			bdate = ?,
-			sex = ?,
-			tc = ?,
-			medeni_hal = ?,
-			point = ?,
-			maas = ?";
-			$query = $db->prepare($sql);
-			$insert = $query->execute(array(
-				$name,$surname,$birth,$sex,$tcno,$marital,$point,0
-			));
-			if($insert){
-				$newId = $db->lastInsertId();
-				$sql = "INSERT INTO {$table}_com SET 
-				e_id = ?,
-				com_id = ?,
-				value = ?";
-				$query= $db->prepare($sql);
-				$query->execute(array(
-					$newId,1,$mobile
-				));
-				$sql = "INSERT INTO {$table}_com SET 
-				e_id = ?,
-				com_id = ?,
-				value = ?";
-				$query= $db->prepare($sql);
-				$query->execute(array(
-					$newId,2,$email
-				));
-				if($query){
-					if(isset($_POST["foreign"])){
-						foreach ($_POST["foreign"] as $key => $value) {
-							$sql = "INSERT INTO {$table}_dil SET 
-							e_id = ?,
-							dil_id = ?";
-							$query = $db->prepare($sql);
-							$query->execute(array(
-								$newId,$value
-							));
-						}
-					}
-					if(isset($_POST["skills"])){
-						foreach ($_POST["skills"] as $key => $value) {
-							$sql = "INSERT INTO {$table}_yetenek SET 
-							e_id = ?,
-							y_id = ?";
-							$query = $db->prepare($sql);
-							$query->execute(array(
-								$newId,$value
-							));
-						}
-					}
-					successMessage('<b>'.$name.' '.$surname.'</b> eklendi');
-				}
-			}
-		}
+        $sql = "INSERT INTO {$table} SET 
+        fname = ?,
+        lname = ?,
+        bdate = ?,
+        sex = ?,
+        tc = ?,
+        medeni_hal = ?,
+        point = ?,
+        maas = ?";
+        $query = $db->prepare($sql);
+        $insert = $query->execute(array(
+            $name,$surname,$birth,$sex,$tcno,$marital,$point,0
+        ));
+        if($insert){
+            $newId = $db->lastInsertId();
+            $sql = "INSERT INTO {$table}_com SET 
+            e_id = ?,
+            com_id = ?,
+            value = ?";
+            $query= $db->prepare($sql);
+            $query->execute(array(
+                $newId,1,$mobile
+            ));
+            $sql = "INSERT INTO {$table}_com SET 
+            e_id = ?,
+            com_id = ?,
+            value = ?";
+            $query= $db->prepare($sql);
+            $query->execute(array(
+                $newId,2,$email
+            ));
+            if($query){
+                if(isset($_POST["foreign"])){
+                    foreach ($_POST["foreign"] as $key => $value) {
+                        $sql = "INSERT INTO {$table}_dil SET 
+                        e_id = ?,
+                        dil_id = ?";
+                        $query = $db->prepare($sql);
+                        $query->execute(array(
+                            $newId,$value
+                        ));
+                    }
+                }
+                if(isset($_POST["skills"])){
+                    foreach ($_POST["skills"] as $key => $value) {
+                        $sql = "INSERT INTO {$table}_yetenek SET 
+                        e_id = ?,
+                        y_id = ?";
+                        $query = $db->prepare($sql);
+                        $query->execute(array(
+                            $newId,$value
+                        ));
+                    }
+                }
+                $_SESSION['employee_add'] = $name.' '.$surname;
+                if(isset($_SESSION['employee_add'])){
+                    header('Location: '.$_SERVER['REQUEST_URI']);
+                    exit();
+                }
+            }
+        }
     }
-    else if(isset($_POST["add"]) && (!isset($_POST["marital"]) || !isset($_POST["sex"])))
-        failMessage("Medeni hal ve cinsiyeti girin!");
+    if(isset($_SESSION['employee_add'])){
+        successMessage('<b>'.$_SESSION['employee_add'].'</b> eklendi.');
+        unset($_SESSION['employee_add']);
+    }
     echo '
-    <form action="" method="POST">
+    <form action="'.$phpself.'?add" method="POST">
             <table class="tg" style="margin-bottom:10px;">
                 <tr>
                     <td class="tg-yw4l">Adı</td>
@@ -158,13 +157,13 @@ function calisanEkle($db,$table){
                 </tr>
                 <tr>
                     <td class="tg-yw4l">Doğum tarihi</td>
-                    <td class="tg-yw4l"><input class="input-type-text editStyle" type="date" name="birth" max="2000-12-31" min="1917-12-31" required></td>
+                    <td class="tg-yw4l"><input class="input-type-text editStyle" type="date" name="birth" max="2000-12-31" min="1917-12-31" title="gg-AA-YYYY" required></td>
                 </tr>
                 <tr>
                     <td class="tg-yw4l">Cinsiyet</td>
                     <td class="tg-yw4l">
-                        Bay <input type="radio" name="sex" value="Bay">
-                        Bayan <input type="radio" name="sex" value="Bayan">
+                        Bay <input type="radio" name="sex" value="Bay" required>
+                        Bayan <input type="radio" name="sex" value="Bayan" required>
                     </td>
                 </tr>
                 <tr>
@@ -174,8 +173,8 @@ function calisanEkle($db,$table){
                 <tr>
                     <td class="tg-yw4l">Medeni hali</td>
                     <td class="tg-yw4l">
-                        Bekar <input type="radio" name="marital" value="Bekar">
-                        Evli <input type="radio" name="marital" value="Evli">
+                        Bekar <input type="radio" name="marital" value="Bekar" required>
+                        Evli <input type="radio" name="marital" value="Evli" required>
                     </td>
                 </tr>
                 <tr>
@@ -184,7 +183,7 @@ function calisanEkle($db,$table){
                 </tr>
                 <tr>
                     <td class="tg-yw4l">Telefon numarası</td>
-                    <td class="tg-yw4l"><input class="input-type-text editStyle" type="number" name="mobile" min="5300000000" min="5599999999" required></td>
+                    <td class="tg-yw4l"><input class="input-type-text editStyle" type="number" name="mobile" min="5000000000" max="5599999999" title="10 haneli telefon numarası" required></td>
                 </tr>
                 <tr>
                     <td class="tg-yw4l">Mail adresi</td>
@@ -235,7 +234,8 @@ function calisanDuzenle($db,$table){
         $tcno = $_POST["tcno"];
         $marital = $_POST["marital"];
         $point = $_POST["point"];
-        $salary = $_POST["salary"];
+        if($phpself=="/employees.php")
+            $salary = $_POST["salary"];
 		$mobile = $_POST["mobile"];
         $email = $_POST["email"];
 		if(strlen((string)$tcno) != 11){
@@ -256,17 +256,32 @@ function calisanDuzenle($db,$table){
 			maas=:salary 
 			WHERE id=:id";
 			$query = $db->prepare($sql);
-			$update = $query->execute(array(
-				"name" => $name,
-				"surname" => $surname,
-				"birth" => $birth,
-				"sex" => $sex,
-				"tcno" => $tcno,
-				"marital" => $marital,
-				"point" => $point,
-				"salary" => $salary,
-				"id" => $id
-			));
+            if($phpself=="/employees.php"){
+                $update = $query->execute(array(
+                    "name" => $name,
+                    "surname" => $surname,
+                    "birth" => $birth,
+                    "sex" => $sex,
+                    "tcno" => $tcno,
+                    "marital" => $marital,
+                    "point" => $point,
+                    "salary" => $salary,
+                    "id" => $id
+                ));
+            }
+            else{
+                $update = $query->execute(array(
+                    "name" => $name,
+                    "surname" => $surname,
+                    "birth" => $birth,
+                    "sex" => $sex,
+                    "tcno" => $tcno,
+                    "marital" => $marital,
+                    "point" => $point,
+                    "salary" => 0,
+                    "id" => $id
+                ));
+            }
 			if($update){
 				$sql = "UPDATE {$table}_com SET 
 				value=:mobile 
@@ -312,7 +327,11 @@ function calisanDuzenle($db,$table){
 							));
 						}
 					}
-					successMessage('<b>'.$name.' '.$surname.'</b> düzenlendi');
+                    $_SESSION['employee_edit'] = $name.' '.$surname;
+                    if(isset($_SESSION['employee_edit'])){
+                        header('Location: '.$_SERVER['REQUEST_URI']);
+                        exit();
+                    }
 				}
 			}
 		}
@@ -320,6 +339,10 @@ function calisanDuzenle($db,$table){
     $sql = "SELECT * FROM {$table} WHERE id = '{$id}'";
     $query = $db->query($sql)->fetch(PDO::FETCH_ASSOC);
     if($query){
+        if(isset($_SESSION['employee_edit'])){
+            successMessage('<b>'.$_SESSION['employee_edit'].'</b> düzenlendi');
+            unset($_SESSION['employee_edit']);
+        }
         echo '
         <form action="" method="POST">
             <table class="tg" style="margin-bottom:10px;">
@@ -360,16 +383,20 @@ function calisanDuzenle($db,$table){
                 <tr>
                     <td class="tg-yw4l">Performans Puanı</td>
                     <td class="tg-yw4l"><input class="input-type-text editStyle" type="number" name="point" value="'.$query["point"].'" required></td>
-                </tr>
+                </tr>';
+                if($phpself=="/employees.php") {
+                    echo'
                 <tr>
                     <td class="tg-yw4l">Maaşı</td>
                     <td class="tg-yw4l"><input class="input-type-text editStyle" type="number" name="salary" value="'.$query["maas"].'" required></td>
-                </tr>
+                </tr>';
+                }
+                echo'
                 <tr>
                     <td class="tg-yw4l">Telefon numarası</td>';
                     $com = $db->query("SELECT * FROM {$table}_com WHERE e_id='{$id}' AND com_id=1")->fetch(PDO::FETCH_ASSOC);
                     echo'
-                    <td class="tg-yw4l"><input class="input-type-text editStyle" type="number" name="mobile" min="5300000000" min="5599999999" value="'.$com["value"].'" required></td>
+                    <td class="tg-yw4l"><input class="input-type-text editStyle" type="number" name="mobile" min="5000000000" max="5599999999" value="'.$com["value"].'" required></td>
                 </tr>
                 <tr>
                     <td class="tg-yw4l">Mail adresi</td>';
@@ -801,10 +828,18 @@ function projeEkle($db,$table){
             $insert = $query->execute(array(
                 $name,$start,$finish,$point,
             ));
-            successMessage('<b>'.$name.'</b> eklendi');
+            $_SESSION['project_add'] = $name;
+            if(isset($_SESSION['project_add'])){
+                header('Location: '.$_SERVER['REQUEST_URI']);
+                exit();
+            }
         }
         else
             failMessage('Başlangıç tarihi bitiş tarihinden daha sonra olamaz!');
+    }
+    if(isset($_SESSION['project_add'])){
+        successMessage('<b>'.$_SESSION['project_add'].'</b> eklendi.');
+        unset($_SESSION['project_add']);
     }
     echo '
     <form action="" method="POST">
@@ -815,11 +850,11 @@ function projeEkle($db,$table){
             </tr>
             <tr>
                 <td class="tg-yw4l">Başlangıç tarihi</td>
-                <td class="tg-yw4l"><input class="input-type-text editStyle" type="date" name="start" max="2023-12-30" min="1979-12-30" required></td>
+                <td class="tg-yw4l"><input class="input-type-text editStyle" type="date" name="start" max="2023-12-30" min="1979-12-30" title="gg-AA-YYYY" required></td>
             </tr>
             <tr>
                 <td class="tg-yw4l">Bitiş tarihi</td>
-                <td class="tg-yw4l"><input class="input-type-text editStyle" type="date" name="finish" max="2023-12-30" min="1979-12-30" required></td>
+                <td class="tg-yw4l"><input class="input-type-text editStyle" type="date" name="finish" max="2023-12-30" min="1979-12-30" title="gg-AA-YYYY" required></td>
             </tr>
             <tr>
                 <td class="tg-yw4l">Proje puanı</td>
@@ -853,7 +888,7 @@ function projeDuzenle($db,$table){
             "point" => $point,
             "id" => $id
         ));
-        if($update){
+        if($update && $phpself=="/projects.php"){
             $sql = "DELETE FROM proje_to_employee WHERE p_id='{$id}'";
             $delete = $db->prepare($sql);
             $delete->execute();
@@ -871,12 +906,20 @@ function projeDuzenle($db,$table){
                     }
                 }
             }
-            successMessage('<b>'.$name.'</b> düzenlendi');
+        }
+        $_SESSION['project_edit'] = $name;
+        if(isset($_SESSION['project_edit'])){
+            header('Location: '.$_SERVER['REQUEST_URI']);
+            exit();
         }
     }
     $sql = "SELECT * FROM {$table} WHERE id = {$id}";
     $query = $db->query($sql)->fetch(PDO::FETCH_ASSOC);
     if($query){
+        if(isset($_SESSION['project_edit'])){
+            successMessage('<b>'.$_SESSION['project_edit'].'</b> projesi düzenlendi');
+            unset($_SESSION['project_edit']);
+        }
         echo '
         <form action="" method="POST">
             <table class="tg" style="margin-bottom:10px;">
@@ -886,19 +929,21 @@ function projeDuzenle($db,$table){
                 </tr>
                 <tr>
                     <td class="tg-yw4l">Başlangıç tarihi</td>
-                    <td class="tg-yw4l"><input class="input-type-text editStyle" type="date" name="start" value="'.$query["start_date"].'" max="2023-12-30" min="1979-12-30" required></td>
+                    <td class="tg-yw4l"><input class="input-type-text editStyle" type="date" name="start" value="'.$query["start_date"].'" max="2023-12-30" min="1979-12-30" title="gg-AA-YYYY" required></td>
                 </tr>
                 <tr>
                     <td class="tg-yw4l">Bitiş tarihi</td>
-                    <td class="tg-yw4l"><input class="input-type-text editStyle" type="date" name="finish" value="'.$query["finish_date"].'" max="2023-12-30" min="1979-12-30" required></td>
+                    <td class="tg-yw4l"><input class="input-type-text editStyle" type="date" name="finish" value="'.$query["finish_date"].'" max="2023-12-30" min="1979-12-30" title="gg-AA-YYYY" required></td>
                 </tr>
                 <tr>
                     <td class="tg-yw4l">Proje puanı</td>
                     <td class="tg-yw4l"><input class="input-type-text editStyle" type="number" name="point" value="'.$query["puan"].'" required></td>
-                </tr>
-                <tr>
+                </tr>';
+                if($phpself=="/projects.php"){ ?>
+                <tr> 
                     <td class="tg-yw4l">Projede çalışanlar</td>
-                    <td class="tg-yw4l">';
+                    <td class="tg-yw4l">
+                        <?php
                     $point = $query["puan"];
                     $employee = $db->query("SELECT * FROM employee WHERE point>=$point ORDER BY id",PDO::FETCH_ASSOC);
                     if($employee->rowCount()>0){
@@ -923,7 +968,8 @@ function projeDuzenle($db,$table){
 						echo 'Aktif çalışan yok!';
                         echo'
                     </td>
-                </tr>
+                </tr>';
+                }echo'
             </table>
             <input type="submit" class="input-type-submit" name="edit" value="Düzenle">
             <a href="'.$phpself.'"><div class="cancel">Geri</div></a>
@@ -1008,8 +1054,8 @@ function projeBitir($db,$table1,$table2){
             if(isset($_POST["point"])){
                 foreach ($_POST["point"] as $key => $value) {
                     $employee =$db->query("SELECT point,maas FROM employee WHERE id='{$key}'")->fetch(PDO::FETCH_ASSOC);
-                    $point = $employee["point"] + $value;
-                    $salary = $employee["maas"] + $value;
+                    $point = ceil($employee["point"] + $value);
+                    $salary = ceil($employee["maas"] + $value*0.6);
                     $update = $db->prepare("UPDATE employee SET point=:point, maas=:salary WHERE id='{$key}'");
                     $update->execute(array(
                         "point" => $point,
@@ -1251,7 +1297,7 @@ function ayrintiliProje($db,$table){
                         foreach ($employeeIDs as $eid) {
                             $e_id = $eid["e_id"];
                             $employeeQ = $db->query("SELECT fname,lname FROM employee WHERE id='$e_id'")->fetch(PDO::FETCH_ASSOC);
-                            echo $employeeQ["fname"].' '.$employeeQ["lname"].'<br';
+                            echo $employeeQ["fname"].' '.$employeeQ["lname"].'<br>';
                         }
                     }
                     else
@@ -1282,7 +1328,15 @@ function dilEkle($db,$table){
         $insert = $query->execute(array(
             $name
         ));
-        successMessage('<b>'.$name.'</b> eklendi');
+        $_SESSION['lang_add'] = $name;
+        if(isset($_SESSION['lang_add'])){
+            header('Location: '.$_SERVER['REQUEST_URI']);
+            exit();
+        }
+    }
+    if(isset($_SESSION['lang_add'])){
+        successMessage('<b>'.$_SESSION['lang_add'].'</b> eklendi');
+        unset($_SESSION['lang_add']);
     }
     echo '
     <form action="" method="POST">
@@ -1309,12 +1363,20 @@ function dilDuzenle($db,$table){
             "id" => $id
         ));
         if($update){
-            successMessage('<b>'.$name.'</b> düzenlendi');
+            $_SESSION['lang_add'] = $name;
+            if(isset($_SESSION['lang_add'])){
+                header('Location: '.$_SERVER['REQUEST_URI']);
+                exit();
+            }
         }
     }
     $sql = "SELECT * FROM {$table} WHERE id = {$id}";
     $query = $db->query($sql)->fetch(PDO::FETCH_ASSOC);
     if($query){
+        if(isset($_SESSION['lang_add'])){
+            successMessage('<b>'.$_SESSION['lang_add'].'</b> düzenlendi.');
+            unset($_SESSION['lang_add']);
+        }
         echo '
         <form action="" method="POST">
             <table class="tg" style="margin-bottom:10px;">
@@ -1389,7 +1451,15 @@ function yetenekEkle($db,$table){
         $insert = $query->execute(array(
             $name
         ));
-        successMessage('<b>'.$name.'</b> eklendi');
+        $_SESSION['skill_add'] = $name;
+        if(isset($_SESSION['skill_add'])){
+            header('Location: '.$_SERVER['REQUEST_URI']);
+            exit();
+        }
+    }
+    if(isset($_SESSION['skill_add'])){
+        successMessage('<b>'.$_SESSION['skill_add'].'</b> eklendi');
+        unset($_SESSION['skill_add']);
     }
     echo '
     <form action="" method="POST">
@@ -1416,12 +1486,20 @@ function yetenekDuzenle($db,$table){
             "id" => $id
         ));
         if($update){
-            successMessage('<b>'.$name.'</b> düzenlendi');
+            $_SESSION['skill_add'] = $name;
+            if(isset($_SESSION['skill_add'])){
+                header('Location: '.$_SERVER['REQUEST_URI']);
+                exit();
+            }
         }
     }
     $sql = "SELECT * FROM {$table} WHERE id = {$id}";
     $query = $db->query($sql)->fetch(PDO::FETCH_ASSOC);
     if($query){
+        if(isset($_SESSION['skill_add'])){
+            successMessage('<b>'.$_SESSION['skill_add'].'</b> düzenlendi.');
+            unset($_SESSION['skill_add']);
+        }
         echo '
         <form action="" method="POST">
             <table class="tg" style="margin-bottom:10px;">

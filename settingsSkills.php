@@ -1,7 +1,6 @@
 <?php
-    include('functions.php');
+    require_once('functions.php');
     girisKontrol();
-    session_write_close();
  ?>
 <!DOCTYPE html>
 <html lang="tr">

@@ -1,7 +1,6 @@
 <?php
-    include('functions.php');
+    require_once('functions.php');
     girisKontrol();
-    session_write_close();
  ?>
 <!DOCTYPE html>
 <html lang="tr">
@@ -18,6 +17,7 @@
             <div class="Atittle">Aktif Proje Havuzu</div>
             <div class="Atext">
                 <?php
+                        
                         $table = "proje";
                         if(isset($_GET["delete"]))
                             projeSil($db,$table);

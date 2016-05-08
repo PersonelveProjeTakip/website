@@ -1,7 +1,6 @@
 <?php
-    include('functions.php');
+    require_once('functions.php');
     girisKontrol();
-    session_write_close();
  ?>
 <!DOCTYPE html>
 <html lang="tr">
@@ -33,7 +32,6 @@
                             pasifProjeleriYazdir($db,$table);
 							echo '<a href="'.$_SERVER["PHP_SELF"].'?add"><div class="input-type-submit">Yeni kayıt</div></a>';
 						}
-                            
                         veriTabaniniKapat($db);
                 ?>
 
