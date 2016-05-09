@@ -551,6 +551,11 @@ function calisanTasi($db,$table1,$table2){
     $query = $db->query($sql)->fetch(PDO::FETCH_ASSOC);
     if($query){
         $fname = $query["fname"];
+        $setZeroSalary = $db->prepare("UPDATE {$table1} SET maas=:salary WHERE id=:id");
+        $setZeroSalary->execute(array(
+            "salary" => '0',
+            "id" => $id
+        ));
         $sql = "INSERT INTO 
         {$table2}(fname,lname,bdate,sex,tc,medeni_hal,point,maas) 
         SELECT fname,lname,bdate,sex,tc,medeni_hal,point,maas FROM {$table1} 
@@ -638,7 +643,7 @@ function calisanTasi($db,$table1,$table2){
                         $query->execute(array(
                             "id" => -1
                         ));
-                        successMessage('<b>'.$fname.'</b> taşındı');
+                        successMessage('<b>'.$fname.'</b> taşındı.');
                     }
                 }
             }
@@ -817,11 +822,15 @@ function ayrintiliCalisan($db,$table){
                 <tr>
                     <td class="tg-yw4l"><b>Performans Puanı</b></td>
                     <td class="tg-yw4l">'.$query["point"].'</td>
-                </tr>
+                </tr>';
+                if($phpself=="/employees.php"){
+                    echo'
                 <tr>
                     <td class="tg-yw4l"><b>Maaşı</b></td>
                     <td class="tg-yw4l">'.$query["maas"].'</td>
-                </tr>
+                </tr>';
+                }
+                echo'
                 <tr>
                     <td class="tg-yw4l"><b>Telefon numarası</b></td>';
                     $com = $db->query("SELECT * FROM {$table}_com WHERE e_id='{$id}' AND com_id=1")->fetch(PDO::FETCH_ASSOC);
@@ -955,44 +964,50 @@ function projeDuzenle($db,$table){
         $start      = $_POST["start"];
         $finish     = $_POST["finish"];
         $point      = $_POST["point"];
-        $sql = "UPDATE {$table} SET 
-        isim=:name, 
-        start_date=:start, 
-        finish_date=:finish, 
-        puan=:point 
-        WHERE id=:id";
-        $query = $db->prepare($sql);
-        $update = $query->execute(array(
-            "name" => $name,
-            "start" => $start,
-            "finish" => $finish,
-            "point" => $point,
-            "id" => $id
-        ));
-        if($update && $phpself=="/projects.php"){
-            $sql = "DELETE FROM proje_to_employee WHERE p_id='{$id}'";
-            $delete = $db->prepare($sql);
-            $delete->execute();
-            if(isset($_POST["employees"])){
-                foreach ($_POST["employees"] as $key => $value) {
-                    $isEnoughForThat = $db->query("SELECT point FROM employee WHERE id='$value' AND point>='$point'")->fetch(PDO::FETCH_ASSOC);
-                    if($isEnoughForThat){
-                        $sql = "INSERT INTO proje_to_employee SET 
-                        p_id = ?,
-                        e_id = ?";
-                        $query = $db->prepare($sql);
-                        $query->execute(array(
-                            $id,$value
-                        ));
+        $startSeconds = strtotime($start);
+        $finishSeconds = strtotime($finish);
+        if($finishSeconds-$startSeconds>0){
+            $sql = "UPDATE {$table} SET 
+            isim=:name, 
+            start_date=:start, 
+            finish_date=:finish, 
+            puan=:point 
+            WHERE id=:id";
+            $query = $db->prepare($sql);
+            $update = $query->execute(array(
+                "name" => $name,
+                "start" => $start,
+                "finish" => $finish,
+                "point" => $point,
+                "id" => $id
+            ));
+            if($update && $phpself=="/projects.php"){
+                $sql = "DELETE FROM proje_to_employee WHERE p_id='{$id}'";
+                $delete = $db->prepare($sql);
+                $delete->execute();
+                if(isset($_POST["employees"])){
+                    foreach ($_POST["employees"] as $key => $value) {
+                        $isEnoughForThat = $db->query("SELECT point FROM employee WHERE id='$value' AND point>='$point'")->fetch(PDO::FETCH_ASSOC);
+                        if($isEnoughForThat){
+                            $sql = "INSERT INTO proje_to_employee SET 
+                            p_id = ?,
+                            e_id = ?";
+                            $query = $db->prepare($sql);
+                            $query->execute(array(
+                                $id,$value
+                            ));
+                        }
                     }
                 }
             }
+            $_SESSION['project_edit'] = $name;
+            if(isset($_SESSION['project_edit'])){
+                header('Location: '.$_SERVER['REQUEST_URI']);
+                exit();
+            }
         }
-        $_SESSION['project_edit'] = $name;
-        if(isset($_SESSION['project_edit'])){
-            header('Location: '.$_SERVER['REQUEST_URI']);
-            exit();
-        }
+        else
+            failMessage('Başlangıç tarihi bitiş tarihinden daha sonra olamaz!');
     }
     $sql = "SELECT * FROM {$table} WHERE id = {$id}";
     $query = $db->query($sql)->fetch(PDO::FETCH_ASSOC);
@@ -1147,66 +1162,74 @@ function projeBitir($db,$table1,$table2){
     $project = $db->query($sql)->fetch(PDO::FETCH_ASSOC);
     if($project){
         if(isset($_POST["finish"])){
-            if(isset($_POST["point"])){
-                foreach ($_POST["point"] as $key => $value) {
-                    $employee =$db->query("SELECT point,maas FROM employee WHERE id='{$key}'")->fetch(PDO::FETCH_ASSOC);
-                    $point = ceil($employee["point"] + $value);
-                    $salary = ceil($employee["maas"] + $value*0.6);
-                    $update = $db->prepare("UPDATE employee SET point=:point, maas=:salary WHERE id='{$key}'");
-                    $update->execute(array(
-                        "point" => $point,
-                        "salary" => $salary
-                    ));
-                }
-                if($update){
-                    $finish = $_POST["finishDate"];
-                    $name = $project["isim"];
-                    $sql = "UPDATE {$table1} SET finish_date=:finish WHERE id=:id";
-                    $query = $db->prepare($sql);
-                    $query->execute(array(
-                        "finish" => $finish,
-                        "id" => $id
-                    ));
-                    if($query){
-                        $sql = "INSERT INTO 
-                        {$table2}(isim,start_date,finish_date,puan) 
-                        SELECT isim,start_date,finish_date,puan FROM {$table1} 
-                        WHERE id =:id";
+            $start = $project["start_date"];
+            $finish = $_POST["finishDate"];
+            $startSeconds = strtotime($start);
+            $finishSeconds = strtotime($finish);
+            if($finishSeconds-$startSeconds>0){
+                if(isset($_POST["point"])){
+                    foreach ($_POST["point"] as $key => $value) {
+                        $employee =$db->query("SELECT point,maas FROM employee WHERE id='{$key}'")->fetch(PDO::FETCH_ASSOC);
+                        $point = ceil($employee["point"] + $value);
+                        $salary = ceil($employee["maas"] + $value*0.6);
+                        $update = $db->prepare("UPDATE employee SET point=:point, maas=:salary WHERE id='{$key}'");
+                        $update->execute(array(
+                            "point" => $point,
+                            "salary" => $salary
+                        ));
+                    }
+                    if($update){
+                        $finish = $_POST["finishDate"];
+                        $name = $project["isim"];
+                        $sql = "UPDATE {$table1} SET finish_date=:finish WHERE id=:id";
                         $query = $db->prepare($sql);
                         $query->execute(array(
+                            "finish" => $finish,
                             "id" => $id
                         ));
-                        $newId = $db->lastInsertId();
                         if($query){
-                            $sql = "DELETE FROM {$table1} WHERE id='{$id}'";
+                            $sql = "INSERT INTO 
+                            {$table2}(isim,start_date,finish_date,puan) 
+                            SELECT isim,start_date,finish_date,puan FROM {$table1} 
+                            WHERE id =:id";
                             $query = $db->prepare($sql);
-                            $query->execute();
+                            $query->execute(array(
+                                "id" => $id
+                            ));
+                            $newId = $db->lastInsertId();
                             if($query){
-                                $sql = "DELETE FROM proje_to_employee WHERE p_id=:id";
+                                $sql = "DELETE FROM {$table1} WHERE id='{$id}'";
                                 $query = $db->prepare($sql);
-                                $query->execute(array(
-                                    "id" => $id
-                                ));
-                                foreach ($_POST["point"] as $key => $value) {
-                                    $emp = $db->query("SELECT fname,lname FROM employee WHERE id='{$key}'")->fetch(PDO::FETCH_ASSOC);
-                                    $insert = $db->prepare("INSERT INTO proje_bitmis_to_employee SET p_id=?,name=?,surname=?,point=?");
-                                    $insert->execute(array(
-                                        $newId,$emp["fname"],$emp["lname"],$value
+                                $query->execute();
+                                if($query){
+                                    $sql = "DELETE FROM proje_to_employee WHERE p_id=:id";
+                                    $query = $db->prepare($sql);
+                                    $query->execute(array(
+                                        "id" => $id
                                     ));
-                                }
-                                if($insert){
-                                    successMessage('<b>'.$name.'</b> bitirildi');
-                                    yonlendir(1000,$phpself);   
+                                    foreach ($_POST["point"] as $key => $value) {
+                                        $emp = $db->query("SELECT fname,lname FROM employee WHERE id='{$key}'")->fetch(PDO::FETCH_ASSOC);
+                                        $insert = $db->prepare("INSERT INTO proje_bitmis_to_employee SET p_id=?,name=?,surname=?,point=?");
+                                        $insert->execute(array(
+                                            $newId,$emp["fname"],$emp["lname"],$value
+                                        ));
+                                    }
+                                    if($insert){
+                                        successMessage('<b>'.$name.'</b> bitirildi');
+                                        yonlendir(1000,$phpself);   
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                else{
+                    failMessage("Çalışan olmadan proje bitmez!");
+                    yonlendir(1000,$phpself);
+                }
             }
-            else{
-                failMessage("Çalışan olmadan proje bitmez!");
-                yonlendir(1000,$phpself);
-            }
+            else
+                failMessage('Başlangıç tarihi bitiş tarihinden daha sonra olamaz! Lütfen başlangıç tarihini düzenleyin.');
         }
         else{
             echo'   
