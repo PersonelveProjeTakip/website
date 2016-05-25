@@ -1,24 +1,23 @@
-
 -- phpMyAdmin SQL Dump
--- version 3.5.2.2
+-- version 4.5.5.1
 -- http://www.phpmyadmin.net
 --
--- Anamakine: localhost
--- Üretim Zamanı: 09 May 2016, 18:38:31
--- Sunucu sürümü: 10.0.20-MariaDB-log
--- PHP Sürümü: 5.2.17
+-- Anamakine: 127.0.0.1
+-- Üretim Zamanı: 25 May 2016, 16:59:39
+-- Sunucu sürümü: 5.7.11
+-- PHP Sürümü: 5.6.19
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Veritabanı: `u609214744_savt`
+-- Veritabanı: `savt`
 --
 
 -- --------------------------------------------------------
@@ -27,11 +26,10 @@ SET time_zone = "+00:00";
 -- Tablo için tablo yapısı `communication`
 --
 
-CREATE TABLE IF NOT EXISTS `communication` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=3 ;
+CREATE TABLE `communication` (
+  `id` int(11) NOT NULL,
+  `value` varchar(32) COLLATE utf8_turkish_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `communication`
@@ -47,11 +45,10 @@ INSERT INTO `communication` (`id`, `value`) VALUES
 -- Tablo için tablo yapısı `dil`
 --
 
-CREATE TABLE IF NOT EXISTS `dil` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=13 ;
+CREATE TABLE `dil` (
+  `id` int(11) NOT NULL,
+  `value` varchar(32) COLLATE utf8_turkish_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `dil`
@@ -66,7 +63,8 @@ INSERT INTO `dil` (`id`, `value`) VALUES
 (8, 'İtalyanca'),
 (9, 'Japonca'),
 (10, 'Arapça'),
-(12, 'Çince');
+(12, 'Çince'),
+(13, 'Urduca');
 
 -- --------------------------------------------------------
 
@@ -74,8 +72,8 @@ INSERT INTO `dil` (`id`, `value`) VALUES
 -- Tablo için tablo yapısı `employee`
 --
 
-CREATE TABLE IF NOT EXISTS `employee` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `employee` (
+  `id` int(11) NOT NULL,
   `fname` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
   `lname` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
   `bdate` date NOT NULL,
@@ -83,9 +81,8 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `tc` varchar(11) COLLATE utf8_turkish_ci NOT NULL,
   `medeni_hal` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
   `point` double NOT NULL,
-  `maas` double NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=63 ;
+  `maas` double NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `employee`
@@ -95,7 +92,7 @@ INSERT INTO `employee` (`id`, `fname`, `lname`, `bdate`, `sex`, `tc`, `medeni_ha
 (46, 'Halil İbrahim', 'UÇUN', '1983-04-04', 'Bay', '15478423540', 'Evli', 4600, 5000),
 (43, 'Hilal', 'KOÇ', '1988-01-25', 'Bayan', '12548795141', 'Bekar', 2400, 3000),
 (44, 'Ahmet', 'İNAN', '1978-06-18', 'Bay', '45654854131', 'Evli', 7250, 8150),
-(45, 'Furkan', 'SERDAROĞLU', '1976-08-17', 'Bay', '68212145621', 'Evli', 6350, 6750),
+(45, 'Furkan', 'SERDAROĞLU', '1976-08-17', 'Bay', '68212145621', 'Evli', 6450, 6810),
 (47, 'Muhammet Emin', 'KAYA', '1967-06-25', 'Bay', '45121541243', 'Evli', 7500, 9000),
 (48, 'Sinem', 'YILDIZ', '1991-02-01', 'Bayan', '35462119054', 'Bekar', 3000, 3200),
 (49, 'Musa', 'SÜSLÜ', '1985-02-13', 'Bay', '54545121454', 'Evli', 2600, 2700),
@@ -119,13 +116,12 @@ INSERT INTO `employee` (`id`, `fname`, `lname`, `bdate`, `sex`, `tc`, `medeni_ha
 -- Tablo için tablo yapısı `employee_com`
 --
 
-CREATE TABLE IF NOT EXISTS `employee_com` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `employee_com` (
+  `id` int(11) NOT NULL,
   `e_id` int(11) NOT NULL,
   `com_id` int(11) NOT NULL,
-  `value` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=126 ;
+  `value` varchar(32) COLLATE utf8_turkish_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `employee_com`
@@ -179,12 +175,11 @@ INSERT INTO `employee_com` (`id`, `e_id`, `com_id`, `value`) VALUES
 -- Tablo için tablo yapısı `employee_dil`
 --
 
-CREATE TABLE IF NOT EXISTS `employee_dil` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `employee_dil` (
+  `id` int(11) NOT NULL,
   `e_id` int(11) NOT NULL,
-  `dil_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=259 ;
+  `dil_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `employee_dil`
@@ -236,8 +231,8 @@ INSERT INTO `employee_dil` (`id`, `e_id`, `dil_id`) VALUES
 (244, 56, 9),
 (243, 56, 4),
 (242, 56, 1),
-(247, 57, 2),
-(246, 57, 1),
+(260, 57, 2),
+(259, 57, 1),
 (250, 58, 8),
 (249, 58, 7),
 (248, 58, 1),
@@ -248,7 +243,8 @@ INSERT INTO `employee_dil` (`id`, `e_id`, `dil_id`) VALUES
 (257, 61, 7),
 (256, 61, 2),
 (255, 61, 1),
-(258, 62, 1);
+(258, 62, 1),
+(261, 57, 13);
 
 -- --------------------------------------------------------
 
@@ -256,8 +252,8 @@ INSERT INTO `employee_dil` (`id`, `e_id`, `dil_id`) VALUES
 -- Tablo için tablo yapısı `employee_pool`
 --
 
-CREATE TABLE IF NOT EXISTS `employee_pool` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `employee_pool` (
+  `id` int(11) NOT NULL,
   `fname` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
   `lname` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
   `bdate` date NOT NULL,
@@ -265,9 +261,8 @@ CREATE TABLE IF NOT EXISTS `employee_pool` (
   `tc` varchar(11) COLLATE utf8_turkish_ci NOT NULL,
   `medeni_hal` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
   `point` double NOT NULL,
-  `maas` double NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=78 ;
+  `maas` double NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `employee_pool`
@@ -280,6 +275,7 @@ INSERT INTO `employee_pool` (`id`, `fname`, `lname`, `bdate`, `sex`, `tc`, `mede
 (52, 'Fatma', 'AYDIN', '1992-01-30', 'Bayan', '54548745126', 'Bekar', 1300, 0),
 (59, 'Ali', 'AKYÜREK', '1989-05-07', 'Bay', '25671463254', 'Evli', 2250, 0),
 (60, 'Metehan', 'GENÇ', '1984-09-29', 'Bay', '25612849682', 'Bekar', 2300, 0),
+(79, 'ibrahim', 'HEYİK', '1991-05-01', 'Bay', '65495585565', 'Bekar', 3250, 0),
 (69, 'Ubeydullah', 'ERDEMİR', '1997-01-12', 'Bay', '45844545454', 'Bekar', 1400, 2120),
 (71, 'Elif', 'YALÇIN', '1994-11-30', 'Bayan', '17174815154', 'Bekar', 1300, 0),
 (72, 'Mehmet ikbal', 'KARACA', '1996-03-20', 'Bay', '21545451548', 'Bekar', 1150, 0),
@@ -291,13 +287,12 @@ INSERT INTO `employee_pool` (`id`, `fname`, `lname`, `bdate`, `sex`, `tc`, `mede
 -- Tablo için tablo yapısı `employee_pool_com`
 --
 
-CREATE TABLE IF NOT EXISTS `employee_pool_com` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `employee_pool_com` (
+  `id` int(11) NOT NULL,
   `e_id` int(11) NOT NULL,
   `com_id` int(11) NOT NULL,
-  `value` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=153 ;
+  `value` varchar(32) COLLATE utf8_turkish_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `employee_pool_com`
@@ -316,6 +311,8 @@ INSERT INTO `employee_pool_com` (`id`, `e_id`, `com_id`, `value`) VALUES
 (116, 59, 2, 'a.akyurek34@gmail.com'),
 (117, 60, 1, '5317400826'),
 (118, 60, 2, 'gmetehan@yandex.com'),
+(155, 79, 2, 'ibrahim_hyk@hotmail.com'),
+(156, 79, 1, '5418798955'),
 (135, 69, 2, 'u.erdemir@gmail.com'),
 (136, 69, 1, '5385448654'),
 (139, 71, 1, '5334584587'),
@@ -331,12 +328,11 @@ INSERT INTO `employee_pool_com` (`id`, `e_id`, `com_id`, `value`) VALUES
 -- Tablo için tablo yapısı `employee_pool_dil`
 --
 
-CREATE TABLE IF NOT EXISTS `employee_pool_dil` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `employee_pool_dil` (
+  `id` int(11) NOT NULL,
   `e_id` int(11) NOT NULL,
-  `dil_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=226 ;
+  `dil_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `employee_pool_dil`
@@ -346,6 +342,8 @@ INSERT INTO `employee_pool_dil` (`id`, `e_id`, `dil_id`) VALUES
 (108, 41, 7),
 (107, 41, 3),
 (106, 41, 1),
+(231, 79, 1),
+(230, 79, 3),
 (123, 47, 1),
 (124, 47, 3),
 (151, 48, 7),
@@ -358,6 +356,7 @@ INSERT INTO `employee_pool_dil` (`id`, `e_id`, `dil_id`) VALUES
 (175, 59, 1),
 (179, 60, 2),
 (178, 60, 1),
+(229, 79, 10),
 (200, 69, 10),
 (201, 69, 3),
 (202, 69, 1),
@@ -375,12 +374,11 @@ INSERT INTO `employee_pool_dil` (`id`, `e_id`, `dil_id`) VALUES
 -- Tablo için tablo yapısı `employee_pool_yetenek`
 --
 
-CREATE TABLE IF NOT EXISTS `employee_pool_yetenek` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `employee_pool_yetenek` (
+  `id` int(11) NOT NULL,
   `e_id` int(11) NOT NULL,
-  `y_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=346 ;
+  `y_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `employee_pool_yetenek`
@@ -413,6 +411,10 @@ INSERT INTO `employee_pool_yetenek` (`id`, `e_id`, `y_id`) VALUES
 (258, 60, 14),
 (257, 60, 7),
 (256, 60, 6),
+(353, 79, 1),
+(352, 79, 5),
+(351, 79, 19),
+(350, 79, 20),
 (299, 69, 19),
 (300, 69, 6),
 (301, 69, 1),
@@ -437,12 +439,11 @@ INSERT INTO `employee_pool_yetenek` (`id`, `e_id`, `y_id`) VALUES
 -- Tablo için tablo yapısı `employee_yetenek`
 --
 
-CREATE TABLE IF NOT EXISTS `employee_yetenek` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `employee_yetenek` (
+  `id` int(11) NOT NULL,
   `e_id` int(11) NOT NULL,
-  `y_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=427 ;
+  `y_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `employee_yetenek`
@@ -552,11 +553,11 @@ INSERT INTO `employee_yetenek` (`id`, `e_id`, `y_id`) VALUES
 (392, 56, 10),
 (391, 56, 9),
 (390, 56, 8),
-(401, 57, 11),
-(400, 57, 10),
-(399, 57, 9),
-(398, 57, 8),
-(397, 57, 6),
+(431, 57, 11),
+(430, 57, 10),
+(429, 57, 9),
+(428, 57, 8),
+(427, 57, 6),
 (407, 58, 19),
 (406, 58, 18),
 (405, 58, 15),
@@ -592,14 +593,13 @@ INSERT INTO `employee_yetenek` (`id`, `e_id`, `y_id`) VALUES
 -- Tablo için tablo yapısı `proje`
 --
 
-CREATE TABLE IF NOT EXISTS `proje` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `proje` (
+  `id` int(11) NOT NULL,
   `isim` varchar(64) COLLATE utf8_turkish_ci NOT NULL,
   `start_date` date NOT NULL,
   `finish_date` date NOT NULL,
-  `puan` double NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=25 ;
+  `puan` double NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `proje`
@@ -619,14 +619,13 @@ INSERT INTO `proje` (`id`, `isim`, `start_date`, `finish_date`, `puan`) VALUES
 -- Tablo için tablo yapısı `proje_bitmis`
 --
 
-CREATE TABLE IF NOT EXISTS `proje_bitmis` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `proje_bitmis` (
+  `id` int(11) NOT NULL,
   `isim` varchar(64) COLLATE utf8_turkish_ci NOT NULL,
   `start_date` date NOT NULL,
   `finish_date` date NOT NULL,
-  `puan` double NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=8 ;
+  `puan` double NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `proje_bitmis`
@@ -641,14 +640,13 @@ INSERT INTO `proje_bitmis` (`id`, `isim`, `start_date`, `finish_date`, `puan`) V
 -- Tablo için tablo yapısı `proje_bitmis_to_employee`
 --
 
-CREATE TABLE IF NOT EXISTS `proje_bitmis_to_employee` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `proje_bitmis_to_employee` (
+  `id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `name` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
   `surname` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
-  `point` int(3) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=12 ;
+  `point` int(3) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `proje_bitmis_to_employee`
@@ -666,14 +664,13 @@ INSERT INTO `proje_bitmis_to_employee` (`id`, `p_id`, `name`, `surname`, `point`
 -- Tablo için tablo yapısı `proje_pool`
 --
 
-CREATE TABLE IF NOT EXISTS `proje_pool` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `proje_pool` (
+  `id` int(11) NOT NULL,
   `isim` varchar(64) COLLATE utf8_turkish_ci NOT NULL,
   `start_date` date NOT NULL,
   `finish_date` date NOT NULL,
-  `puan` double NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=31 ;
+  `puan` double NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `proje_pool`
@@ -690,12 +687,11 @@ INSERT INTO `proje_pool` (`id`, `isim`, `start_date`, `finish_date`, `puan`) VAL
 -- Tablo için tablo yapısı `proje_to_employee`
 --
 
-CREATE TABLE IF NOT EXISTS `proje_to_employee` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `proje_to_employee` (
+  `id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
-  `e_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=130 ;
+  `e_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `proje_to_employee`
@@ -742,11 +738,10 @@ INSERT INTO `proje_to_employee` (`id`, `p_id`, `e_id`) VALUES
 -- Tablo için tablo yapısı `yetenek`
 --
 
-CREATE TABLE IF NOT EXISTS `yetenek` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` varchar(32) COLLATE utf8_turkish_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci AUTO_INCREMENT=21 ;
+CREATE TABLE `yetenek` (
+  `id` int(11) NOT NULL,
+  `value` varchar(32) COLLATE utf8_turkish_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
 --
 -- Tablo döküm verisi `yetenek`
@@ -770,6 +765,190 @@ INSERT INTO `yetenek` (`id`, `value`) VALUES
 (19, 'MATLAB'),
 (20, 'SWIFT');
 
+--
+-- Dökümü yapılmış tablolar için indeksler
+--
+
+--
+-- Tablo için indeksler `communication`
+--
+ALTER TABLE `communication`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `dil`
+--
+ALTER TABLE `dil`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `employee`
+--
+ALTER TABLE `employee`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `employee_com`
+--
+ALTER TABLE `employee_com`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `employee_dil`
+--
+ALTER TABLE `employee_dil`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `employee_pool`
+--
+ALTER TABLE `employee_pool`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `employee_pool_com`
+--
+ALTER TABLE `employee_pool_com`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `employee_pool_dil`
+--
+ALTER TABLE `employee_pool_dil`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `employee_pool_yetenek`
+--
+ALTER TABLE `employee_pool_yetenek`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `employee_yetenek`
+--
+ALTER TABLE `employee_yetenek`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `proje`
+--
+ALTER TABLE `proje`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `proje_bitmis`
+--
+ALTER TABLE `proje_bitmis`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `proje_bitmis_to_employee`
+--
+ALTER TABLE `proje_bitmis_to_employee`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `proje_pool`
+--
+ALTER TABLE `proje_pool`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `proje_to_employee`
+--
+ALTER TABLE `proje_to_employee`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `yetenek`
+--
+ALTER TABLE `yetenek`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Dökümü yapılmış tablolar için AUTO_INCREMENT değeri
+--
+
+--
+-- Tablo için AUTO_INCREMENT değeri `communication`
+--
+ALTER TABLE `communication`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- Tablo için AUTO_INCREMENT değeri `dil`
+--
+ALTER TABLE `dil`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- Tablo için AUTO_INCREMENT değeri `employee`
+--
+ALTER TABLE `employee`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+--
+-- Tablo için AUTO_INCREMENT değeri `employee_com`
+--
+ALTER TABLE `employee_com`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+--
+-- Tablo için AUTO_INCREMENT değeri `employee_dil`
+--
+ALTER TABLE `employee_dil`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
+--
+-- Tablo için AUTO_INCREMENT değeri `employee_pool`
+--
+ALTER TABLE `employee_pool`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+--
+-- Tablo için AUTO_INCREMENT değeri `employee_pool_com`
+--
+ALTER TABLE `employee_pool_com`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
+--
+-- Tablo için AUTO_INCREMENT değeri `employee_pool_dil`
+--
+ALTER TABLE `employee_pool_dil`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=236;
+--
+-- Tablo için AUTO_INCREMENT değeri `employee_pool_yetenek`
+--
+ALTER TABLE `employee_pool_yetenek`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=360;
+--
+-- Tablo için AUTO_INCREMENT değeri `employee_yetenek`
+--
+ALTER TABLE `employee_yetenek`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=452;
+--
+-- Tablo için AUTO_INCREMENT değeri `proje`
+--
+ALTER TABLE `proje`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+--
+-- Tablo için AUTO_INCREMENT değeri `proje_bitmis`
+--
+ALTER TABLE `proje_bitmis`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- Tablo için AUTO_INCREMENT değeri `proje_bitmis_to_employee`
+--
+ALTER TABLE `proje_bitmis_to_employee`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- Tablo için AUTO_INCREMENT değeri `proje_pool`
+--
+ALTER TABLE `proje_pool`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+--
+-- Tablo için AUTO_INCREMENT değeri `proje_to_employee`
+--
+ALTER TABLE `proje_to_employee`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+--
+-- Tablo için AUTO_INCREMENT değeri `yetenek`
+--
+ALTER TABLE `yetenek`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
